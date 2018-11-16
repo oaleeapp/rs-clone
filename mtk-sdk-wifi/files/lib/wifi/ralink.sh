@@ -23,6 +23,7 @@ config wifi-device	radio0
 	option htmode	HT40
 	option channel  auto
 	option disabled	1
+	option linkit_mode	ap
 
 config wifi-iface ap
 	option device   radio0
@@ -41,11 +42,6 @@ config wifi-iface sta
 	option ssid	UplinkAp
 	option key	SecretKey
 	option encryption psk
-	option disabled	1
-    option ApCliEnable '1'
-    option ApCliSsid 'se.VPN123'
-    option ApCliAuthMode 'WPA2PSK'
-    option ApCliWPAPSK 'qqqqqqqq9'
 EOF
 }
 

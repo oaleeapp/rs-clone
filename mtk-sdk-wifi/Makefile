@@ -31,7 +31,7 @@ define Package/mtk-sdk-wifi
   SECTION:=ralink
   CATEGORY:=Ralink SDK
   TITLE:=MT7628/88 SDK Wifi
-  DEPENDS:=@TARGET_ramips_mt7688_LinkIt7688 +wireless-tools +libuci +libubus +libubox
+  DEPENDS:=@TARGET_ramips_mt7688_LinkIt7688 +wireless-tools +libuci
   ABI_VERSION:=$(PKG_RELEASE)
 endef
 
@@ -50,7 +50,7 @@ IWINFO_BACKENDS := \
 EXTRA_CFLAGS := \
 	-I$(STAGING_DIR)/usr/include/libnl-tiny \
 	-I$(STAGING_DIR)/usr/include \
-	-D_GNU_SOURCE 
+	-D_GNU_SOURCE
 
 MAKE_FLAGS += \
 	FPIC="$(FPIC)" \
@@ -60,8 +60,7 @@ MAKE_FLAGS += \
 
 define Build/Compile
 	$(call Build/Compile/Default,)
-	$(TARGET_CC) $(TARGET_CFLAGS)  -Wall -Werror -o  $(PKG_BUILD_DIR)/ap_client src/ap_client.c
-	$(TARGET_CC) $(TARGET_CFLAGS) -lubus -lubox -Wall -Werror -Wno-unused-variable -Wno-unused-function -o  $(PKG_BUILD_DIR)/apClient src/apClient.c
+	$(TARGET_CC) $(TARGET_CFLAGS) -Wall -Werror -o $(PKG_BUILD_DIR)/ap_client src/ap_client.c
 endef
 
 define Build/InstallDev
@@ -82,14 +81,12 @@ define Package/mtk-sdk-wifi/install
 	
 	$(INSTALL_DIR) $(1)/sbin/
 	$(CP) $(PKG_BUILD_DIR)/ap_client $(1)/sbin/
-	$(CP) $(PKG_BUILD_DIR)/apClient $(1)/sbin/
 ifneq ($(CONFIG_ALL_KMODS),)
 	$(CP) ./wifi_binary/mt_wifi.ko_$(LINUX_VERSION)_all $(1)/lib/modules/$(LINUX_VERSION)/mt_wifi.ko
 else
 	$(CP) ./wifi_binary/mt_wifi.ko_$(LINUX_VERSION) $(1)/lib/modules/$(LINUX_VERSION)/mt_wifi.ko
 endif
 	$(CP) ./files/* $(1)
-	$(INSTALL_BIN) ./files/lib/netifd/wireless/ralink.sh $(1)/lib/netifd/wireless/ralink.sh
 
 endef
 
